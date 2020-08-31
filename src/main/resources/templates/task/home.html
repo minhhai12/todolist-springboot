@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <title>ToDoリスト</title>
+</head>
+
+<body>
+<div class="col">
+    <div id="alertSuccess" class="alert alert-success  float-right"
+         style="display: none" role="alert">タスクが完了になりました。</div>
+    <div align="center" id="form-index">
+
+            <h1 style="margin-top: 50px;">タスク・マネージャー</h1>
+
+        <div class="container">
+
+            <div style="margin-top: 20px;" align="left"><a th:href="@{'/task/create'}">
+                <button type="button" class="btn btn-info">登録</button>
+            </a></div>
+
+            <div class="row" style="margin-top: 20px;">
+
+                <div class="col-8">
+                <div>未完了タスク一覧</div>
+                    <table class="table" style="margin-top: 15px">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Task Name</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">Finish Date</th>
+                            <th scope="col">Priority Level</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:if="${#lists.isEmpty(listTaskUnfinished)}">
+                            <td colspan="6" style="text-align: center">未完了タスクがありません</td>
+                        </th:block>
+                        <th:block th:unless="${#lists.isEmpty(listTaskUnfinished)}">
+                            <tr th:each="task,iterStat :${listTaskUnfinished}">
+                                <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${iterStat.count}"></p></a></td>
+                                <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${task.getTask_name()}"></p></a></td>
+                                <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${#dates.format(task.start_date, 'yyyy-MM-dd')}"></p></a></td>
+                                <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${#dates.format(task.end_date, 'yyyy-MM-dd')}"></p></a></td>
+                                <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${task.getPriority()}"></p></a></td>
+                                <td>
+                                    <a th:href="@{'/task/finished_task/' + ${task.id}}">
+                                        <button type="button" class="btn btn-info">完了</button>
+                                    </a>
+
+                                    <a th:href="@{'/task/delete/' + ${task.id}}" onclick="return confirm('Are you sure you want to delete this item?');">
+                                        <button type="button" class="btn btn-danger">削除</button>
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="col-4">
+                    <div>完了タスク一覧</div>
+                    <table class="table" style="margin-top: 15px">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Task Name</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:if="${#lists.isEmpty(listTaskFinished)}">
+                            <td colspan="6" style="text-align: center">完了タスクがありません</td>
+                        </th:block>
+                        <th:block th:unless="${#lists.isEmpty(listTaskFinished)}">
+                            <tr th:each="task,iterStat :${listTaskFinished}">
+                                <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${iterStat.count}"></p></a></td>
+                                <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${task.getTask_name()}"></p></a></td>
+                                <td>
+                                    <a th:href="@{'/task/unfinished_task/' + ${task.id}}">
+                                        <button type="button" class="btn btn-danger">未完了</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
