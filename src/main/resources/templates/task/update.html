@@ -11,65 +11,94 @@
           integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css"/>
+
+    <script>
+
+        $(document).ready(function() {
+
+            $('#task-form1').validate({
+                rules : {
+                    task_name : 'required',
+                    description: 'required',
+                    start_date : {
+                        required : true
+                    },
+                    end_date : {
+                        required : true
+                    }
+                },
+                messages : {
+                    task_name : '必須項目です。',
+                    description:'必須項目です。',
+                    start_date : '必須項目です。',
+                    end_date : '必須項目です。'
+                },
+
+                submitHandler : function(form) {
+                    console.log("summit")
+                    var r = confirm("タスクを保存します。本当によろしいですか？");
+                    if (r == true) {
+                        form.submit();
+                    }
+                }
+            });
+
+        });</script>
+
+
 </head>
 
 <body>
 <div class="container">
-    <h1 style="margin-top: 50px;" align="center">タスク変更</h1>
-    <form th:action="@{/task/update/{id}(id=*{id})}" th:method="post"
-          id="task-form" name="task-form" th:object="${task}">
+    <h1 style="margin-top: 20px;" align="center">タスク変更</h1>
+    <form id="task-form1" th:object="${task}" th:action="@{/task/update/{id}(id=*{id})}" th:method="post" name="task-form">
         <div class="form-group">
-            <label class="control-label" style="margin-top: 50px;">タイトル</label> <input
-                class="form-control" type="text" th:field="*{task_name}" />
+            <label class="control-label" style="margin-top: 30px;">タイトル (*)</label> <input
+                class="form-control" type="text" th:field="*{task_name}" placeholder="タイトル"/>
         </div>
 
         <div class="form-group">
-            <label class="control-label" for="startDate" style="margin-top: 20px;">開始日</label>
-            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-
-                <input id="startDate" type="text" class="form-control datetimepicker-input"
-                       data-target="#datetimepicker1" name="start_date" th:field="*{start_date}"/>
-                <div class="input-group-append" data-target="#datetimepicker1"
-                     data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
-
-
-            </div>
+            <label class="control-label" style="margin-top: 10px;">タスクの内容  (*)</label>
+            <textarea class="form-control" name="description" th:field="*{description}"
+                      rows="3" aria-label="With textarea" placeholder="タスクの内容"></textarea>
         </div>
 
         <div class="form-group">
-            <label class="control-label" for="finishDate" style="margin-top: 20px;">終了日</label>
-            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                <input id="finishDate" type="text" class="form-control datetimepicker-input"
-                       data-target="#datetimepicker2" name="end_date" th:field="*{end_date}"/>
-                <div class="input-group-append" data-target="#datetimepicker2"
-                     data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                </div>
+            <label class="control-label" th:for="start_date" style="margin-top: 10px;">予定日 (*)</label>
 
-            </div>
+            <input type="date"  th:field="*{start_date}" class="form-control">
+
         </div>
 
         <div class="form-group">
-            <label class="control-label" style="margin-top: 20px;">優先順位</label>
+            <label class="control-label" th:for="start_date" style="margin-top: 10px;">完了日 (*)</label>
+
+            <input type="date"  th:field="*{end_date}" class="form-control">
+
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" style="margin-top: 10px;">優先順位 (*)</label>
             <div>
                 <select class="browser-default custom-select" th:field="*{priority}" name="priorityLevel">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
+                    <option value="1">非常に高い</option>
+                    <option value="2">高い</option>
+                    <option value="3">ノーマル</option>
+                    <option value="4">低い</option>
+                    <option value="5">非常に低い</option>
                 </select>
             </div>
         </div>
 
-        <div class="pull-right form-row" style="margin-top: 30px">
+        <div class="pull-right form-row" style="margin-top: 20px">
             <div class="col-6" align="right">
-            <button class="btn btn-info" type="submit" onclick="return confirm('Are you sure you want to update this item?');">保存</button></div>
+            <button class="btn btn-info" type="submit">保存</button></div>
             <div class="col-6"><button class="btn btn-secondary"
                     onclick="window.location.href='/task'" type="button">戻る</button></div>
         </div>

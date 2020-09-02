@@ -8,16 +8,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <title>ToDoリスト</title>
+
+    <style>
+        .tableScroll {
+            overflow-y: auto;
+            height: 400px;
+        }
+
+        .tableScroll table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .tableScroll th, .tableScroll td {
+            padding: 8px 16px;
+        }
+
+        .tableScroll th {
+            position: sticky;
+            top: 0;
+            background: whitesmoke;
+        }
+    </style>
+
 </head>
 
 <body>
+<nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">TODOLIST</a>
+</nav>
 <div class="col">
     <div id="alertSuccess" class="alert alert-success  float-right"
          style="display: none" role="alert">タスクが完了になりました。</div>
     <div align="center" id="form-index">
 
-            <h1 style="margin-top: 50px;">タスク・マネージャー</h1>
+            <h1 style="margin-top: 20px;">タスク・マネージャー</h1>
 
         <div class="container">
 
@@ -29,72 +57,82 @@
 
                 <div class="col-8">
                 <div>未完了タスク一覧</div>
-                    <table class="table" style="margin-top: 15px">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Task Name</th>
-                            <th scope="col">Start Date</th>
-                            <th scope="col">Finish Date</th>
-                            <th scope="col">Priority Level</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <th:block th:if="${#lists.isEmpty(listTaskUnfinished)}">
-                            <td colspan="6" style="text-align: center">未完了タスクがありません</td>
-                        </th:block>
-                        <th:block th:unless="${#lists.isEmpty(listTaskUnfinished)}">
+                    <div class="tableScroll" style="margin-top: 10px">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">タスクの名前</th>
+                                <th scope="col">開始日</th>
+                                <th scope="col">終了日</th>
+                                <th scope="col">優先順位</th>
+                                <th scope="col">行動</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <th:block th:if="${#lists.isEmpty(listTaskUnfinished)}">
+                                <td colspan="6" style="text-align: center">未完了タスクがありません</td>
+                            </th:block>
                             <tr th:each="task,iterStat :${listTaskUnfinished}">
                                 <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${iterStat.count}"></p></a></td>
                                 <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${task.getTask_name()}"></p></a></td>
                                 <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${#dates.format(task.start_date, 'yyyy-MM-dd')}"></p></a></td>
                                 <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${#dates.format(task.end_date, 'yyyy-MM-dd')}"></p></a></td>
-                                <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${task.getPriority()}"></p></a></td>
+                                <td th:switch="${task.getPriority()}"><a th:href="@{'/task/detail/' + ${task.id}}">
+                                    <p th:case="'1'">非常に高い</p>
+                                    <p th:case="'2'">高い</p>
+                                    <p th:case="'3'">ノーマル</p>
+                                    <p th:case="'4'">低い</p>
+                                    <p th:case="'5'">非常に低い</p>
+                                </a>
+                                </td>
                                 <td>
                                     <a th:href="@{'/task/finished_task/' + ${task.id}}">
                                         <button type="button" class="btn btn-info">完了</button>
                                     </a>
 
-                                    <a th:href="@{'/task/delete/' + ${task.id}}" onclick="return confirm('Are you sure you want to delete this item?');">
-                                        <button type="button" class="btn btn-danger">削除</button>
+                                    <a th:href="@{'/task/delete/' + ${task.id}}" onclick="return confirm('タスクを削除します。本当によろしいですか？');">
+                                        <button type="button" class="btn btn-danger"> <i class="fa fa-trash"></i> 削除</button>
                                     </a>
-
                                 </td>
 
                             </tr>
-                        </th:block>
-                        </tbody>
-                    </table>
-
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+
                 <div class="col-4">
                     <div>完了タスク一覧</div>
-                    <table class="table" style="margin-top: 15px">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Task Name</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <th:block th:if="${#lists.isEmpty(listTaskFinished)}">
-                            <td colspan="6" style="text-align: center">完了タスクがありません</td>
-                        </th:block>
-                        <th:block th:unless="${#lists.isEmpty(listTaskFinished)}">
-                            <tr th:each="task,iterStat :${listTaskFinished}">
-                                <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${iterStat.count}"></p></a></td>
-                                <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${task.getTask_name()}"></p></a></td>
-                                <td>
-                                    <a th:href="@{'/task/unfinished_task/' + ${task.id}}">
-                                        <button type="button" class="btn btn-danger">未完了</button>
-                                    </a>
-                                </td>
+
+                    <div class="tableScroll" style="margin-top: 10px">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">タスクの名前</th>
+                                <th scope="col">行動</th>
                             </tr>
-                        </th:block>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            <th:block th:if="${#lists.isEmpty(listTaskFinished)}">
+                                <td colspan="6" style="text-align: center">完了タスクがありません</td>
+                            </th:block>
+                            <th:block th:unless="${#lists.isEmpty(listTaskFinished)}">
+                                <tr th:each="task,iterStat :${listTaskFinished}">
+                                    <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${iterStat.count}"></p></a></td>
+                                    <td><a th:href="@{'/task/detail/' + ${task.id}}"><p th:text="${task.getTask_name()}"></p></a></td>
+                                    <td>
+                                        <a th:href="@{'/task/unfinished_task/' + ${task.id}}">
+                                            <button type="button" class="btn btn-danger">未完了</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
             </div>
@@ -104,4 +142,5 @@
 </div>
 
 </body>
+<footer style="text-align: center; margin-top: 50px">@FPT日本語学校・ファム ド ミン ハイ</footer>
 </html>

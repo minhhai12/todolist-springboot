@@ -21,15 +21,21 @@
 
 <body>
 <div class="container">
-    <h1 style="margin-top: 50px;" align="center">タスク閲覧</h1>
+    <h1 style="margin-top: 20px;" align="center">タスク閲覧</h1>
         <div class="form-group">
-            <label class="control-label"style="margin-top: 50px;">タイトル</label> <input disabled
-                class="form-control" type="text" th:field="*{task.task_name}" />
+            <label class="control-label"style="margin-top: 30px;">タイトル</label>
+            <input disabled class="form-control" type="text" th:field="*{task.task_name}" />
         </div>
+
+    <div class="form-group">
+        <label class="control-label"style="margin-top: 10px;">タスクの内容</label>
+        <textarea disabled class="form-control" name="description" th:field="*{task.description}" rows="3" aria-label="With textarea"></textarea>
+
+    </div>
 
         <div class="form-group ">
             <p>
-                <label class="control-label" for="startDate" style="margin-top: 20px;">開始日</label>
+                <label class="control-label" for="startDate" style="margin-top: 10px;">開始日</label>
                 <input disabled
                     class="form-control" id="startDate" name="startDate"
                     autocomplete="off" placeholder="YYYY/MM/DD" type="text"
@@ -38,16 +44,21 @@
         </div>
 
         <div class="form-group ">
-            <label class="control-label" for="finishDate" style="margin-top: 20px;">終了日</label> <input disabled
+            <label class="control-label" for="finishDate" style="margin-top: 10px;">終了日</label> <input disabled
                 class="form-control" id="finishDate" name="finishDate"
                 autocomplete="off" placeholder="YYYY/MM/DD" type="text"
                 th:field="*{task.end_date}" />
         </div>
 
         <div class="form-group">
-            <label class="control-label" style="margin-top: 20px;">優先順位</label>
-            <input disabled
-                   class="form-control" type="text" th:field="*{task.priority}" />
+            <label class="control-label" style="margin-top: 10px;">優先順位</label>
+            <div th:switch="${task.getPriority()}" class="form-control" type="text" >
+                <p th:case="'1'">非常に高い</p>
+                <p th:case="'2'">高い</p>
+                <p th:case="'3'">ノーマル</p>
+                <p th:case="'4'">低い</p>
+                <p th:case="'5'">非常に低い</p>
+            </div>
         </div>
 
     <div class="pull-right form-row" style="margin-top: 20px">

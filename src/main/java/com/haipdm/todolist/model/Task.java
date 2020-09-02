@@ -18,14 +18,16 @@ public class Task{
 //    @Column(name = "taskName",nullable = false)
     private String task_name;
 
+    private String description;
+
 //    @Column(name = "startDate",nullable = false)
-    @DateTimeFormat(pattern = "yyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date start_date;
 
 //    @Column(name = "finishDate",nullable = false)
-@DateTimeFormat(pattern = "yyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
 
-private Date end_date;
+    private Date end_date;
 
 //    @Column(name = "taskStatus",nullable = false)
     private int status;
@@ -35,18 +37,16 @@ private Date end_date;
 
 //    @Column(name = "flagDelete",nullable = false)
     private int flag_delete;
-//
-//    private String create;
-//    private String update;
 
 
     public Task() {
         super();
     }
 
-    public Task(int id, String task_name, Date start_date, Date end_date, int status, int priority, int flag_delete) {
+    public Task(int id, String task_name, String description, Date start_date, Date end_date, int status, int priority, int flag_delete) {
         this.id = id;
         this.task_name = task_name;
+        this.description = description;
         this.start_date = start_date;
         this.end_date = end_date;
         this.status = status;
@@ -68,6 +68,14 @@ private Date end_date;
 
     public void setTask_name(String task_name) {
         this.task_name = task_name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getStart_date() {

@@ -1,5 +1,6 @@
 package com.haipdm.todolist.controller;
 
+//import com.haipdm.todolist.model.Login;
 import com.haipdm.todolist.model.Task;
 import com.haipdm.todolist.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,27 @@ import java.util.*;
 public class TaskController {
     @Autowired
     private TaskService taskService;
+
+//    @RequestMapping(value="/login", method = RequestMethod.GET)
+//    public String getLogin(){
+//
+//        return "login";
+//    }
+//
+//    @RequestMapping(value="/login", method=RequestMethod.POST)
+//    public String login(@ModelAttribute(name="loginForm") Login loginForm, Model model){
+//        String username= loginForm.getUsername();
+//        String password= loginForm.getPassword();
+//
+//        if("admin".equals(username) && "admin".equals(password)){
+//            return "home";
+//        }
+//        //if username or password is wrong
+//        model.addAttribute("invalidCredentials",true);
+//        //return again login page
+//        return "login";
+//    }
+
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     List<Task> listUnfinished = new ArrayList<>();
@@ -41,7 +63,7 @@ public class TaskController {
             }
         }
         sortListUnfinished(listUnfinished);
-        sortListCompleted(listFinished);
+        sortListFinished(listFinished);
 
         model.addAttribute("listTaskUnfinished", listUnfinished);
         model.addAttribute("listTaskFinished", listFinished);
@@ -87,6 +109,7 @@ public class TaskController {
     public String update(@PathVariable int id, @ModelAttribute Task task) {
         Task taskUpdate = taskService.get(id);
         taskUpdate.setTask_name(task.getTask_name());
+        taskUpdate.setDescription(task.getDescription());
         taskUpdate.setStart_date(task.getStart_date());
         taskUpdate.setEnd_date(task.getEnd_date());
         taskUpdate.setPriority(task.getPriority());
@@ -142,7 +165,7 @@ public class TaskController {
         });
     }
 
-    public void sortListCompleted(List<Task> list) {
+    public void sortListFinished(List<Task> list) {
         Collections.sort(list, new Comparator<Task>() {
             @Override
             public int compare(Task task1, Task task2) {
