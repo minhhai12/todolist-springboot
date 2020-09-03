@@ -39,6 +39,11 @@
 <body>
 <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="#">TODOLIST</a>
+
+    <a th:href="@{'/task/create'}">
+        <button type="button" class="btn btn-info">タスク登録</button>
+    </a>
+
 </nav>
 <div class="col">
     <div id="alertSuccess" class="alert alert-success  float-right"
@@ -49,11 +54,7 @@
 
         <div class="container">
 
-            <div style="margin-top: 20px;" align="left"><a th:href="@{'/task/create'}">
-                <button type="button" class="btn btn-info">登録</button>
-            </a></div>
-
-            <div class="row" style="margin-top: 20px;">
+            <div class="row" style="margin-top: 50px;">
 
                 <div class="col-8">
                 <div>未完了タスク一覧</div>
@@ -92,7 +93,7 @@
                                     </a>
 
                                     <a th:href="@{'/task/delete/' + ${task.id}}" onclick="return confirm('タスクを削除します。本当によろしいですか？');">
-                                        <button type="button" class="btn btn-danger"> <i class="fa fa-trash"></i> 削除</button>
+                                        <button type="button" class="btn btn-danger"> <i class="fa fa-trash"></i> </button>
                                     </a>
                                 </td>
 
@@ -141,6 +142,25 @@
     </div>
 </div>
 
+
 </body>
+
+<!--<script type="text/javascript">-->
+    <!--var listIDDelete = [];-->
+<!--$(function getListIdDelete(id) {-->
+
+    <!--if ($("#cb_delete" + id).is(':checked')) {-->
+    <!--listIDDelete.push(id);-->
+    <!--} else {-->
+    <!--//uncheck - clear input-->
+
+    <!--const index = listIDDelete.indexOf(id);-->
+    <!--if (index > -1) {-->
+    <!--listIDDelete.splice(index, 1);-->
+    <!--}-->
+    <!--}-->
+    <!--console.log(listIDDelete);-->
+<!--});</script>-->
+
 <footer style="text-align: center; margin-top: 50px">@FPT日本語学校・ファム ド ミン ハイ</footer>
 </html>

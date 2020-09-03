@@ -20,28 +20,6 @@ import java.util.*;
 public class TaskController {
     @Autowired
     private TaskService taskService;
-
-//    @RequestMapping(value="/login", method = RequestMethod.GET)
-//    public String getLogin(){
-//
-//        return "login";
-//    }
-//
-//    @RequestMapping(value="/login", method=RequestMethod.POST)
-//    public String login(@ModelAttribute(name="loginForm") Login loginForm, Model model){
-//        String username= loginForm.getUsername();
-//        String password= loginForm.getPassword();
-//
-//        if("admin".equals(username) && "admin".equals(password)){
-//            return "home";
-//        }
-//        //if username or password is wrong
-//        model.addAttribute("invalidCredentials",true);
-//        //return again login page
-//        return "login";
-//    }
-
-
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     List<Task> listUnfinished = new ArrayList<>();
     List<Task> listFinished = new ArrayList<>();
